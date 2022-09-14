@@ -1,0 +1,10 @@
+version: "2.3"
+services:
+  build-squid-image:
+    build:
+      context: ./docker/images/squid
+      dockerfile: Dockerfile
+    image: interface-proxy-api:latest
+    network_mode: "host"
+    restart: "no"
+    command: /bin/sh -c "sleep 1; exit"
