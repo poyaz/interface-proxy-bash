@@ -3,7 +3,7 @@
 DIRNAME=$(realpath $0 | rev | cut -d'/' -f2- | rev)
 readonly DIRNAME
 
-DEFAULT_SQUID_PER_IP_COUNT=2
+DEFAULT_SQUID_PER_IP_COUNT=100
 readonly DEFAULT_SQUID_PER_IP_COUNT
 
 DEFAULT_SQUID_BASEDIR="${DIRNAME}/storage/tmp/squidVolume"
