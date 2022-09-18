@@ -1,3 +1,9 @@
+# v1.1.0
+
+### Change
+
+- Change value of `DEFAULT_SQUID_PER_IP_COUNT` to 100
+
 # v1.0.1
 
 ### Bugfix
