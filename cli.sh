@@ -361,7 +361,7 @@ modify_container_after_remove() {
 install() {
   echo "[INFO] Install dependency"
 
-  local DISTRO=$(_find_distro)
+  local DISTRO=$(find_distro)
   readonly DISTRO
 
   local EXEC_WITH_SUDO=0
