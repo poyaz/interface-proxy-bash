@@ -372,7 +372,48 @@ install() {
   readonly EXEC_WITH_SUDO
 
   case ${DISTRO} in
-  debian | ubuntu)
+  ubuntu)
+    if [[ ${EXEC_WITH_SUDO} -eq 1 ]]; then
+      sudo apt update
+
+      sudo apt install -y \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common \
+        jq \
+        lsof
+
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+      sudo apt update
+
+      sudo apt install -y docker-ce docker-ce-cli containerd.io
+    else
+      apt update
+
+      apt install -y \
+        apt-transport-https \
+        ca-certificates \
+        curl \
+        gnupg-agent \
+        software-properties-common \
+        jq \
+        lsof
+
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+      apt update
+
+      apt install -y docker-ce docker-ce-cli containerd.io
+    fi
+    ;;
+  debian)
     if [[ ${EXEC_WITH_SUDO} -eq 1 ]]; then
       sudo apt update
 
@@ -389,7 +430,7 @@ install() {
 
       sudo apt-key fingerprint 0EBFCD88
 
-      sudo add-apt-repository \
+      sudo add-apt-repository -y \
         "deb [arch=amd64] https://download.docker.com/linux/debian \
                     $(lsb_release -cs) \
                     stable"
@@ -413,7 +454,7 @@ install() {
 
       apt-key fingerprint 0EBFCD88
 
-      add-apt-repository \
+      add-apt-repository -y \
         "deb [arch=amd64] https://download.docker.com/linux/debian \
                     $(lsb_release -cs) \
                     stable"
