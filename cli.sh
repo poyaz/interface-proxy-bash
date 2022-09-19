@@ -387,7 +387,7 @@ install() {
 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
       sudo apt update
 
@@ -406,7 +406,7 @@ install() {
 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
 
-      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+      echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list >/dev/null
 
       apt update
 
@@ -529,7 +529,7 @@ create_proxy() {
 list_proxy() {
   mkdir -p "$DEFAULT_SQUID_BASEDIR"
 
-  echo -e "Listener\t\tOutgoing\t\tInterface"
+  local dataTable="Listener Outgoing Interface"
 
   while IFS= read -r dir; do
     if [[ -z $dir ]]; then
@@ -567,9 +567,11 @@ list_proxy() {
         '
       )
 
-      echo -e "${listener}\t\t${outgoing}\t\t${interface:--}"
+      dataTable="${dataTable}\n${listener} ${outgoing} ${interface:--}"
     done <<<$(ls -1v "$path_config")
   done <<<$(ls -1v "$DEFAULT_SQUID_BASEDIR")
+
+   echo -e "$dataTable" | column -t -s ' '
 }
 
 remove_proxy() {
