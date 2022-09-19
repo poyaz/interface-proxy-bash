@@ -1,3 +1,9 @@
+# v1.2.0
+
+### Change
+
+- Change in show proxy list and use `column` beauty mode
+
 # v1.1.0
 
 ### Change
